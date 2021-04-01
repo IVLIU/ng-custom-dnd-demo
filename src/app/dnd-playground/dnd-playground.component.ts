@@ -12,6 +12,7 @@ export class DndPlaygroundComponent implements OnInit {
   public targetIndex: number
   public currentIndex: number
   public prevIndex: number
+  public translateStyle: Partial<CSSStyleDeclaration>
   // constructor
   constructor() {
     this.__DEBUG_DATA__ = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -19,16 +20,29 @@ export class DndPlaygroundComponent implements OnInit {
     this.targetIndex = -1
     this.currentIndex = -1
     this.prevIndex = -1
+    this.translateStyle = {}
   }
   // methods
   setSnapshot() {
     this.snapshot = [...this.__DEBUG_DATA__]
   }
   forceSet__DEBUG_DATA__() {
-    const current = this.__DEBUG_DATA__[this.currentIndex]
     const target = this.__DEBUG_DATA__[this.targetIndex]
-    this.__DEBUG_DATA__[this.targetIndex] = current
-    this.__DEBUG_DATA__[this.currentIndex] = target
+    if(this.targetIndex > this.currentIndex) {
+      this.__DEBUG_DATA__ = [
+        ...this.__DEBUG_DATA__.slice(0, this.currentIndex),
+        target,
+        ...this.__DEBUG_DATA__.slice(this.currentIndex, this.targetIndex),
+        ...this.__DEBUG_DATA__.slice(this.targetIndex + 1),
+      ]
+      return
+    }
+    this.__DEBUG_DATA__ = [
+      ...this.__DEBUG_DATA__.slice(0, this.targetIndex),
+      ...this.__DEBUG_DATA__.slice(this.targetIndex + 1, this.currentIndex + 1),
+      target,
+      ...this.__DEBUG_DATA__.slice(this.currentIndex + 1),
+    ]
   }
   set__DEBUG_DATA__() {
     if(

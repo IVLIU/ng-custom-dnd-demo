@@ -3,6 +3,7 @@
     <div 
       class="target"
       draggable="true"
+      [ngStyle]="translateStyle"
       [attr.data-index]="idx"
       (drag)="drag($event)"
       (drop)="drop($event)"
