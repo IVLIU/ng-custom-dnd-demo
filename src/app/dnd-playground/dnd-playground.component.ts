@@ -12,7 +12,7 @@ export class DndPlaygroundComponent implements OnInit {
   public targetIndex: number
   public currentIndex: number
   public prevIndex: number
-  public translateStyle: Partial<CSSStyleDeclaration>
+  public translateStyleList: Partial<CSSStyleDeclaration>[]
   // constructor
   constructor() {
     this.__DEBUG_DATA__ = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -20,9 +20,32 @@ export class DndPlaygroundComponent implements OnInit {
     this.targetIndex = -1
     this.currentIndex = -1
     this.prevIndex = -1
-    this.translateStyle = {}
+    this.translateStyleList = []
   }
   // methods
+  calcStyle() {
+    this.translateStyleList[this.targetIndex] = {
+      visibility: 'hidden',
+    }
+    if(this.targetIndex > this.currentIndex) {
+      console.log(this.__DEBUG_DATA__.slice(this.currentIndex, this.targetIndex))
+      if(this.translateStyleList[this.currentIndex]) {
+        return
+      }
+      // this.translateStyleList[this.currentIndex] = {
+      //   transform: 'translateX(200px)',
+      //   transition: 'transform 1s',
+      // }
+      return
+    }
+    console.log(this.__DEBUG_DATA__.slice(this.targetIndex + 1, this.currentIndex + 1))
+  }
+  resetStyle() {
+    // this.translateStyleList[this.targetIndex] = {
+    //   visibility: 'visible',
+    // }
+    this.translateStyleList = []
+  }
   setSnapshot() {
     this.snapshot = [...this.__DEBUG_DATA__]
   }
@@ -73,10 +96,12 @@ export class DndPlaygroundComponent implements OnInit {
   dragend(e: DragEvent) {
     this.forceSet__DEBUG_DATA__()
     this.setSnapshot()
+    this.resetStyle()
     this.reset()
   }
   dragenter(e: DragEvent) {
     this.currentIndex = +(e.target as HTMLDivElement).getAttribute('data-index')!
+    this.calcStyle()
     this.set__DEBUG_DATA__()
   }
   dragleave(e: DragEvent) {
