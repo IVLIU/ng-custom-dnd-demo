@@ -1,0 +1,19 @@
+<div class="wrapper">
+  <div class="block" *ngFor="let item of __DEBUG_DATA__; index as idx">
+    <div 
+      class="target"
+      draggable="true"
+      [attr.data-index]="idx"
+      (drag)="drag($event)"
+      (drop)="drop($event)"
+      (dragstart)="dragstart($event)"
+      (dragend)="dragend($event)"
+      (dragenter)="dragenter($event)"
+      (dragleave)="dragleave($event)"
+      (dragover)="dragover($event)"
+      (dragexit)="dragexit($event)"
+    >
+      {{ item }}
+    </div>
+  </div>
+</div>
